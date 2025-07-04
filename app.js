@@ -1,8 +1,3 @@
-var myLogModule = require('./PRELIMS/utility/log.js');
+const add = require('./add.js');
 
-// myLogModule.warning('Warning node not found..');
-// myLogModule.error('Error: node encountered and error..');
-// myLogModule.info('Node running...');
-
-var msg = require('./PRELIMS/messages.js');
-console.log(msg);
+console.log(500 + 150);

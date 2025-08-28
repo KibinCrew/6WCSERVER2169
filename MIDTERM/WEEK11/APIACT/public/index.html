@@ -1,1 +1,108 @@
+<!-- Galang, Marius Kevin D. | WD301 -->
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>KEVIN GALANG | WD301</title>
+</head>
+<body>
+  <h2>MIDTERM LAB - API Endpoints Activity</h2>
+
+<h1>KEVIN GALANG - WD301 </h1>
+
+  <hr>
+
+  <h3>Add User (POST /api/users)</h3>
+  <form id="addUserForm" action="/api/users" method="POST">
+    <label>
+      Name:
+      <input type="text" name="name" required />
+    </label><br><br>
+
+    <label>
+      Email:
+      <input type="email" name="email" required />
+    </label><br><br>
+
+    <label>
+      Age:
+      <input type="number" name="age" required />
+    </label><br><br>
+
+    <label>
+      Salary:
+      <input type="number" name="salary" required />
+    </label><br><br>
+
+    <button type="submit">Add User</button>
+  </form>
+
+  <pre id="addUserResult"></pre>
+
+  <hr>
+
+  <h3>Delete User by ID (DELETE /api/delete/:id)</h3>
+  <form id="deleteUserForm">
+    <label>
+      User ID to delete:
+      <input type="number" id="deleteId" required />
+    </label>
+    <button type="submit">Delete User</button>
+  </form>
+
+  <pre id="deleteUserResult"></pre>
+
+  <script>
+    const addUserForm = document.getElementById('addUserForm');
+    const addUserResult = document.getElementById('addUserResult');
+
+    addUserForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(addUserForm);
+      const payload = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        age: formData.get('age'),
+        salary: formData.get('salary')
+      };
+
+      try {
+        const res = await fetch('/api/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        addUserResult.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        addUserResult.textContent = 'Error: ' + err.message;
+      }
+    });
+
+    const deleteUserForm = document.getElementById('deleteUserForm');
+    const deleteUserResult = document.getElementById('deleteUserResult');
+
+    deleteUserForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('deleteId').value;
+
+      if (!id) {
+        deleteUserResult.textContent = 'Please enter an ID.';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/delete/' + encodeURIComponent(id), {
+          method: 'DELETE'
+        });
+        const data = await res.json();
+        deleteUserResult.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        deleteUserResult.textContent = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
